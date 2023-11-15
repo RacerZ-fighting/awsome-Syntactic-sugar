@@ -58,9 +58,29 @@ ir.getParams()
 ```java
 Stream<Integer> stream = list.stream().map(String::length);
         stream.forEach(System.out::println);
+
+cfg.getOutEdgesOf(stmt)
+                    .stream()
+                    .filter(edge -> !isUnreachableEdge(edge, constants))   // 在遍历 CFG 时，我们不进入相应的不可达分支
+                    .map(Edge::getTarget)
+                    .forEach(target -> {
+                        if (!isVisited.contains(target)) {
+                            queue.add(target);
+                        }
+                    });
 ```
 
 `map()` 方法接收的是一个 Function 类型的参数
+
+```java
+boolean anyMatchFlag = list.stream().anyMatch(element -> element.contains("王"));
+///
+return switchStmt.getCaseValues()
+                     .stream()
+                     .anyMatch(x -> x == v);
+```
+
+`anyMatch()`，只要有一个元素匹配传入的条件，就返回 true
 
 ```java
 String[] strArray = list.stream().toArray(String[]::new);	
