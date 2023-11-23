@@ -91,6 +91,15 @@ String str = list.stream().collect(Collectors.joining(", ")).toString();
 
 把一个集合按照某种规则转成另外一个集合的时候，可以配套使用 `map()` 方法和 `collect()` 方法
 
+```java
+Value value = edge.getReturnVars()
+                        .stream()
+                        .map(returnOut::get)    // 拿到 fact value
+                        .reduce(Value.getUndef(), cp::meetValue);
+```
+
+`reduce()` 可以合并流的元素并产生单个值，左面为初始化的值，右边为迭代的函数
+
 ### 参考链接
 
 - [Java 8 Optional最佳指南：解决空指针问题的优雅之选 | 二哥的Java进阶之路 (javabetter.cn)](https://javabetter.cn/java8/optional.html)
