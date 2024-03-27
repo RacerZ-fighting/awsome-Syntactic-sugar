@@ -15,7 +15,7 @@
 
 
 
-### 三方库当中的 trick
+### 三方库/内置库当中的 trick
 
 - `urllib.parse` 当中的 `urlencode`
 
@@ -28,6 +28,22 @@
               'authenticity_token': token,
               'user[email][]': [self.target, self.evil]
           }, doseq=True)
+  ```
+
+- fileinput 库
+
+  支持将命令行的输出通过管道传递给该脚本、 重定向文件到该脚本，或在命令行中传递一个文件名或文件名列表给该脚本
+
+  ```python
+  stdin = fileinput.input()
+  # 可以直接解析输入
+  exec(fileinput.input())
+  ```
+
+  传递方式如下：
+
+  ```python
+  ls | ./filein.py
   ```
 
   
