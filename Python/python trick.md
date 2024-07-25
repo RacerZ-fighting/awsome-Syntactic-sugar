@@ -47,7 +47,7 @@
     当生成器函数执行到 `yield` 语句时，它会暂停执行，并返回 `yield` 关键字后面的值。当生成器的 `next()` 方法被调用时，函数从暂停的地方恢复执行，直到遇到下一个 `yield` 语句或函数结束
 
 
-### 三方库当中的 trick
+### 三方库/内置库当中的 trick
 
 - `urllib.parse` 当中的 `urlencode`
 
@@ -60,6 +60,22 @@
               'authenticity_token': token,
               'user[email][]': [self.target, self.evil]
           }, doseq=True)
+  ```
+
+- fileinput 库
+
+  支持将命令行的输出通过管道传递给该脚本、 重定向文件到该脚本，或在命令行中传递一个文件名或文件名列表给该脚本
+
+  ```python
+  stdin = fileinput.input()
+  # 可以直接解析输入
+  exec(fileinput.input())
+  ```
+
+  传递方式如下：
+
+  ```python
+  ls | ./filein.py
   ```
 
   
