@@ -155,7 +155,21 @@
   
   如果我们想触发返回值优化条件，则可利用**常量左值引用 ，右值引用 ，构造新对象**的方式接收返回值
 
+### 并发编程
 
+- 实现临界区前后`lock`和`unlock`操作的封装
+
+```C
+#define ATOMIC(lk) \
+    for (int _ = (spin_lock(lk), 0); _ < 1; \
+        spin_unlock(lk), _++)
+// use
+ATOMIC(lock) {
+    // 临界区代码
+}
+```
+
+其中在初始化操作时还使用了逗号运算符，只返回右边表达式的结果. 通过循环体来封装前后
 
 ### 参考链接
 
@@ -164,3 +178,5 @@
 
 - https://jyywiki.cn/ICS/2020/index.html
 - https://icarus.cs.weber.edu/~dab/cs1410/textbook/5.Structures/unions.html
+
+- https://jyywiki.cn/os-demos/concurrency/spinlock/
