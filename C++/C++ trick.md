@@ -171,6 +171,38 @@ ATOMIC(lock) {
 
 其中在初始化操作时还使用了逗号运算符，只返回右边表达式的结果. 通过循环体来封装前后
 
+- RAII-guarded lock 优雅实现
+
+```c++
+class HoldLock {
+    mutex_t *lk;
+
+public:
+    HoldLock(mutex_t *lock): lk(lock) {
+        mutex_lock(lk);
+    }
+
+    ~HoldLock() {
+        mutex_unlock(lk);
+    }
+};
+
+// use case
+static mutex_t GL = MUTEX_INIT(); // global variable
+{ [[maybe_unused]] HoldLock h(&GL);
+        // critical code space
+}
+```
+RAII
+
+1. **资源获取（锁定）**：
+
+​	•	当创建一个RAII对象时（比如在一个代码块中），该对象的构造函数会立即获取资源。在锁的场景下，这意味着构造函数会自动对互斥锁进行锁定操作。
+
+2.	**资源释放（解锁）**：
+
+​	•	当RAII对象超出其作用域（比如代码块结束）时，该对象的析构函数会自动被调用。在锁的场景下，这意味着析构函数会自动对互斥锁进行解锁操作。
+
 ### 参考链接
 
 - [编程环境 - SAST skill docs (net9.org)](https://docs.net9.org/languages/c-oop/environment/)
@@ -180,3 +212,5 @@ ATOMIC(lock) {
 - https://icarus.cs.weber.edu/~dab/cs1410/textbook/5.Structures/unions.html
 
 - https://jyywiki.cn/os-demos/concurrency/spinlock/
+
+- https://jyywiki.cn/os-demos/concurrency/lockdep/
